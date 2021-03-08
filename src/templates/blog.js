@@ -11,9 +11,10 @@ export default function Template({
     <div className="blog-post-container">
       <div className="blog-post">
         <h1>{frontmatter.title}</h1>
+        <small> <a href={frontmatter.slug}>{frontmatter.slug}</a></small>
         <h2>{frontmatter.date}</h2>
         <div
-          className="blog-post-content"
+          className="content"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

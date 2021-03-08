@@ -1,24 +1,24 @@
 exports.createPages = async ({ actions, graphql, reporter }) => {
     const { createPage } = actions
-  
-    const blogPostTemplate = require.resolve(`./src/templates/blog.js`)
-  
-    const result = await graphql(`
-      {
-        allMarkdownRemark(
-          sort: { order: DESC, fields: [frontmatter___date] }
-          limit: 1000
-        ) {
-          edges {
-            node {
-              frontmatter {
-                slug
-              }
+
+    const markdownQuery = `
+    {
+      allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date] }
+        limit: 1000
+      ) {
+        edges {
+          node {
+            frontmatter {
+              slug
             }
           }
         }
       }
-    `)
+    }
+    `
+  
+    const result = await graphql(markdownQuery)
   
     // Handle errors
     if (result.errors) {
@@ -26,10 +26,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       return
     }
   
+    const markdownTemplate = require.resolve(`./src/templates/blog.js`)
+
     result.data.allMarkdownRemark.edges.forEach(({ node }) => {
       createPage({
         path: node.frontmatter.slug,
-        component: blogPostTemplate,
+        component: markdownTemplate,
         context: {
           // additional data can be passed via context
           slug: node.frontmatter.slug,
