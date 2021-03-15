@@ -1,52 +1,44 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-// import * as R from "ramda"
-const R = require('ramda');
+import * as R from "ramda"
+import { taxonomies } from "../../app-config"
+import { getTaxonomiesName, getAllTerms } from "../../taxonomy"
 
-// import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 export default function Template({
   data, // this prop will be injected by the GraphQL query below.
 }) {
   const { markdownRemark } = data // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark
+  const taxonomiesName = getTaxonomiesName(taxonomies)
 
-  const taxonomies = [
-    "categories",
-    "series",
-    "tags",
-  ]
-
-  const terms = R.pick(taxonomies, frontmatter)
-  console.log(`terms:${JSON.stringify(terms)}`)
+  const terms = getAllTerms([frontmatter], taxonomiesName)
 
   return (
     <div className="blog-post-container">
       <div className="blog-post">
         <h1>{frontmatter.title || frontmatter.slug.replace("-", " ")}</h1>
-        <small> <a href={frontmatter.slug}>{frontmatter.slug}</a></small>
-        {/* todo 分类与标签 */}
+        <small> <a href={`/${frontmatter.slug}`}>{frontmatter.slug}</a></small>
+        {/* 分类与标签 */}
         <h2>Taxonomies:</h2>
-        <pre>
-
-          {/* taxonomies: {JSON.stringify(taxonomies)} */}
-          {/* frontmatter: {JSON.stringify(frontmatter)} */}
-          terms: {JSON.stringify(R.toPairs(terms))}
-        </pre>
         <ul>
           {
-            R.toPairs(terms).map((term, _) => {
-              return (<li>
-                {term[0]}:
-                <ul>
-                  {term[1].map(slug => {
-                    return <li>
-                      <Link to={`/${slug}`}>{slug}</Link>
-                    </li>
-                  })}
-                </ul>
-              </li>)
-            })
+            R.toPairs(terms)
+              .map((term, _) => {
+                const [taxPath, terms] = term
+                return (<li>
+                  <ul>
+                    {taxPath}
+                    {
+                      Object.keys(terms).map(termName => {
+                        return <li>
+                          <Link to={`/${termName}`}>{`${termName}`}</Link>
+                        </li>
+                      })
+                    }
+                  </ul>
+                </li>)
+              })
           }
         </ul>
         <h2>{frontmatter.date}</h2>

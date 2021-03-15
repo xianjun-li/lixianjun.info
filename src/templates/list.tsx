@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-const R = require("ramda")
+import * as R from "ramda"
+import { getTaxonomiesName } from "../../taxonomy"
 
 export default function Template(props) {
 
@@ -17,7 +18,11 @@ export default function Template(props) {
   )
 
   return <div>
-    {/* <pre>{JSON.stringify(contents)}</pre> */}
+    <h1>{term} Index</h1>
+    {/* <pre>
+      props {JSON.stringify(props)}
+      contents {JSON.stringify(contents)}
+    </pre> */}
     {/* 内容列表 */}
     <ul>
       {
@@ -58,14 +63,13 @@ query($skip:Int!, $limit: Int!, $filter: MarkdownRemarkFilterInput){
     edges {
       node {
         excerpt(format:HTML)
-        frontmatter {
-          __typename
+        frontmatter{
+          date(formatString: "MMMM DD, YYYY")
           slug
           title
-          date(formatString: "MMMM DD, YYYY")
-          tags 
-          series 
           categories
+          series
+          tags
         }
       }
     }

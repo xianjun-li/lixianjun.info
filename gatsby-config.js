@@ -4,11 +4,31 @@
  * See: https://www.gatsbyjs.com/docs/gatsby-config/
  */
 
+require('ts-node').register({
+  compilerOptions: {
+    target: "esnext",
+    strict: false,
+  }
+})
+
 module.exports = {
   /* Your site config here */
+
+  siteMetadata: {
+  },
+
   plugins: [
 
     // base plugins -----------
+
+    {
+      resolve: `gatsby-plugin-typescript`,
+      options: {
+        isTSX: true, // defaults to false
+        jsxPragma: `jsx`, // defaults to "React"
+        allExtensions: true, // defaults to false
+      },
+    },
 
     // gatsby-source-filesystem
     {
@@ -23,9 +43,6 @@ module.exports = {
     `gatsby-transformer-sharp`,
 
     // markdown ---------
-
-    // `gatsby-plugin-ffmpeg-new`,
-
     // markdown content
     {
       resolve: `gatsby-transformer-remark`,
