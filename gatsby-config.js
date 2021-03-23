@@ -11,11 +11,12 @@ require('ts-node').register({
   }
 })
 
+const appConfig = require("./app-config")
+
 module.exports = {
   /* Your site config here */
 
-  siteMetadata: {
-  },
+  siteMetadata: appConfig.siteMetadata,
 
   plugins: [
 
@@ -37,6 +38,9 @@ module.exports = {
         path: `${__dirname}/contents`,
       },
     },
+
+
+    `gatsby-plugin-react-helmet`,
 
     //image
     `gatsby-plugin-sharp`,

@@ -17,14 +17,20 @@ interface QueryResult {
 }
 
 // 处理 yaml frontmatter 分类的可选字段
-exports.createSchemaCustomization = ({ actions }) => {
+exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
   const typeDefs = `
+    type Frontmatter {
+      date(
+        difference: String
+        formatString: String
+        fromNow: Boolean
+        locale: String
+      ): Date
+      ${getTaxonomiesName(taxonomies).map(item => `${item}: [String!]`).join("\n")}
+    }
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
-    }
-    type Frontmatter {
-      ${getTaxonomiesName(taxonomies).map(item => `${item}: [String!]`).join("\n")}
     }
   `
   console.log(`typeDefs: ${typeDefs}`)
@@ -42,9 +48,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       ) {
         edges {
           node {
+            excerpt
             frontmatter {
+              date(formatString: "MMMM DD, YYYY")
               slug
               title
+              description
               ${getTaxonomiesName(taxonomies).join("\n")}
             }
           }
@@ -83,12 +92,23 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     getTaxonomiesName(taxonomies)
   )
 
+  // index
+  const indexTemplate = require.resolve(`./src/templates/index.tsx`)
+  createPage({
+    path: '/',
+    component: indexTemplate,
+    context: {
+      terms,
+      contents,
+    },
+  })
+
   console.log(`terms: ${terms}`)
 
   R.forEachObjIndexed((terms, tax) => {
-    R.forEachObjIndexed((articles, term) => {
+    R.forEachObjIndexed((articles:Object, term) => {
       console.log(`term: ${term}`)
-      const totalPages = Array(articles).length
+      const totalPages = Object.keys(articles).length
       const prePage = paging.offset
       const numPages = Math.ceil(totalPages / prePage)
 

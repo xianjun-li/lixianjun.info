@@ -1,0 +1,25 @@
+.gap {
+  margin-bottom: 1rem;
+}
+
+.gap-level {
+  margin-right: 1rem;
+}
+
+.separateline-bottom {
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.separateline-bottom.dark {
+  border-bottom-color: #ccc;
+}
+
+.separateline-right {
+  border-right: 1px solid #333;
+  padding-right: 1rem;
+}
+
+.separateline-right.dark {
+  border-right-color: #ccc;
+}

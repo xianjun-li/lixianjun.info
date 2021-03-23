@@ -29,6 +29,7 @@ export function getTaxonomiesName(taxonomies: VocabularyList): string[] {
     return R.map(item => `${item["name"]}`, taxonomies)
 }
 
+// {taxName: {termName:[term]}}
  function getAllTerms(frontmatters: unknown[], taxonomies: string[]): Object {
   const terms = {}
 
@@ -37,7 +38,7 @@ export function getTaxonomiesName(taxonomies: VocabularyList): string[] {
         taxonomies.map((tax) => {
             if (frontmatter[tax]) {
                 if (tax in terms === false) {
-                    terms[tax] = []
+                    terms[tax] = {}
                 }
                 frontmatter[tax].forEach((term) => {
                     if (term in terms[tax] === false) {
