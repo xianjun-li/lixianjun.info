@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import * as R from "ramda"
 
-import bulma from "bulma"
+// import bulma from "bulma"
 import "bulma/css/bulma.css"
 import "./common.css"
 
@@ -117,9 +117,9 @@ function Layout({
                     {R.toPairs(taxonomies).map((term, _) => {
                       const [taxPath, terms] = term as [String, Object] //强制制定类型
                       return (
-                        <li>
+                        <li className="gap">
                           <ul>
-                            {taxPath}
+                            <span className="title">{taxPath}</span>
                             {Object.keys(terms).map(termName => {
                               return (
                                 <li className="is-dark">
