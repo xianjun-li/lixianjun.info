@@ -21,6 +21,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
   const typeDefs = `
     type Frontmatter {
+      draft: Boolean
       date(
         difference: String
         formatString: String
@@ -43,6 +44,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const markdownQuery = `
     {
       allMarkdownRemark(
+        filter: {frontmatter: {draft: {ne: true}}}
         sort: { order: DESC, fields: [frontmatter___date] }
         limit: 1000
       ) {
@@ -114,11 +116,10 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
       Array.from({ length: numPages }).forEach((_, i) => {
 
-        const op = {eq: `${term}`}
         const frontmatterFilterOptions : any = {}
-        frontmatterFilterOptions[tax] = op
+        frontmatterFilterOptions.draft = {ne: true}
+        frontmatterFilterOptions[tax] = { eq: `${term}` }
 
-        // filter.frontmatter[tax] = { "eq": `${term}` }
         const filter = { frontmatter: frontmatterFilterOptions }        
 
         createPage({
