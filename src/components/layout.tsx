@@ -57,7 +57,9 @@ function Layout({
             <div className="container">
               <input type="checkbox" id="menu-toggle" className="is-hidden" />
               <div className="navbar-brand">
-                <a className="navbar-item">{data.site.siteMetadata.title}</a>
+                <span className="navbar-item">
+                  {data.site.siteMetadata.title}
+                </span>
                 {/* jsx for属性需要改为htmlFor */}
                 <label htmlFor="menu-toggle" className="navbar-burger burger">
                   <span aria-hidden="true"></span>
@@ -82,12 +84,12 @@ function Layout({
                     ({ title, url, iconStyle }) => {
                       return (
                         <span className="navbar-item">
-                          <a className="button is-dark">
+                          <span className="button is-dark">
                             <span className="icon">
                               <i className={iconStyle}></i>
                             </span>
                             <Link to={url}>{title}</Link>
-                          </a>
+                          </span>
                         </span>
                       )
                     }
@@ -146,14 +148,14 @@ function Layout({
       <footer className="footer">
         <div className="content has-text-centered">
           <span className="gap-level">
-            Provided by{" "}
+            Author:{" "}
             <Link to={`//${data.site.siteMetadata.siteUrl}`}>
               {data.site.siteMetadata.author}
             </Link>
           </span>
 
           <span className="gap-level">
-            The website content is licensed
+            The website content is licensed{" "}
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
               CC BY NC SA 4.0
             </a>
