@@ -39,7 +39,7 @@ module.exports = {
       },
     },
 
-
+    // helmet
     `gatsby-plugin-react-helmet`,
 
     //image

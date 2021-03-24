@@ -23,6 +23,20 @@ function Layout({
             siteUrl
             author
             description
+            navigator {
+              main {
+                start {
+                  title
+                  url
+                  iconStyle
+                }
+                end {
+                  title
+                  url
+                  iconStyle
+                }
+              }
+            }
           }
         }
       }
@@ -41,24 +55,43 @@ function Layout({
         <div className="hero-head">
           <nav className="navbar">
             <div className="container">
+              <input type="checkbox" id="menu-toggle" className="is-hidden" />
               <div className="navbar-brand">
-                <a className="navbar-item">
-                  {/* <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo"> */}
-                </a>
+                <a className="navbar-item">{data.site.siteMetadata.title}</a>
+                {/* jsx for属性需要改为htmlFor */}
+                <label htmlFor="menu-toggle" className="navbar-burger burger">
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                </label>
               </div>
-              <div className="navbar-menu">
+              <div id="ResponsiveNav" className="navbar-menu">
+                <div className="navbar-start">
+                  {data.site.siteMetadata.navigator.main.start.map(
+                    ({ title, url, iconStyle }) => {
+                      return (
+                        <Link to={url} className="navbar-item">
+                          {title}
+                        </Link>
+                      )
+                    }
+                  )}
+                </div>
                 <div className="navbar-end">
-                  <Link to={`/`} className="navbar-item is-active">
-                    Home
-                  </Link>
-                  <span className="navbar-item">
-                    <a className="button is-dark">
-                      <span className="icon">
-                        <i className="fab fa-github"></i>
-                      </span>
-                      <Link to="//github.com">Github</Link>
-                    </a>
-                  </span>
+                  {data.site.siteMetadata.navigator.main.end.map(
+                    ({ title, url, iconStyle }) => {
+                      return (
+                        <span className="navbar-item">
+                          <a className="button is-dark">
+                            <span className="icon">
+                              <i className={iconStyle}></i>
+                            </span>
+                            <Link to={url}>{title}</Link>
+                          </a>
+                        </span>
+                      )
+                    }
+                  )}
                 </div>
               </div>
             </div>
@@ -82,7 +115,7 @@ function Layout({
                 <div className="column is-4-desktop is-4-tablet">
                   <ul>
                     {R.toPairs(taxonomies).map((term, _) => {
-                      const [taxPath, terms] = term
+                      const [taxPath, terms] = term as [String, Object] //强制制定类型
                       return (
                         <li>
                           <ul>

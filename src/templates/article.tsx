@@ -33,8 +33,8 @@ export default function Template({
         {R.toPairs(terms).map((term, _) => {
           const [taxPath, terms] = term
           return (
-            <li className="level-item level-left">
-              {taxPath}:
+            <li className="level-left">
+              {`${taxPath}: `}
               <ul className="tags are-normal">
                 {Object.keys(terms).map(termName => {
                   return (
