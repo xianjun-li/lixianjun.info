@@ -1,11 +1,22 @@
 import React from "react"
+
+import { useStaticQuery, graphql } from "gatsby"
+import {
+  Trans,
+  useTranslation,
+  Link,
+  useI18next,
+} from "gatsby-plugin-react-i18next"
 import { Helmet } from "react-helmet"
-import { useStaticQuery, graphql, Link } from "gatsby"
 import * as R from "ramda"
 
 // import bulma from "bulma"
 import "bulma/css/bulma.css"
+import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./common.css"
+
+import { store } from "../../state-store"
+// import ChangeLanguage from "../components/change-language"
 
 function Layout({
   children,
@@ -14,6 +25,12 @@ function Layout({
   taxonomies = {},
   isShowTaxonomies = false,
 }) {
+  const { t } = useTranslation()
+  // 语言及切换
+  const { languages, changeLanguage } = useI18next()
+  store.languages = languages
+  store.changeLanguage = changeLanguage
+
   const data = useStaticQuery(
     graphql`
       query {
@@ -94,6 +111,32 @@ function Layout({
                       )
                     }
                   )}
+
+                  <div className="navbar-item has-dropdown is-hoverable">
+                    <a className="navbar-link">
+                      <span className="icon">
+                        <i className="fas fa-language"></i>
+                      </span>
+                      {/* <span className="">Language</span> */}
+                    </a>
+
+                    <div className="navbar-dropdown">
+                      {languages.map(lng => (
+                        <li key={lng} className="navbar-item">
+                          <span
+                            className="block"
+                            style={{ color: "#333", cursor: "pointer" }}
+                            onClick={e => {
+                              e.preventDefault()
+                              changeLanguage(lng)
+                            }}
+                          >
+                            {lng}
+                          </span>
+                        </li>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -120,14 +163,25 @@ function Layout({
                       const [taxPath, terms] = term as [String, Object] //强制制定类型
                       return (
                         <li className="gap">
+                          <span className="icon-text">
+                            <span className="icon">
+                              <i className="fas fa-infinity"></i>
+                            </span>
+                            <span className="title">{t(`${taxPath}`)}</span>
+                          </span>
                           <ul>
-                            <span className="title">{taxPath}</span>
                             {Object.keys(terms).map(termName => {
                               return (
-                                <li className="is-dark">
+                                <li>
                                   <Link
                                     to={`/${termName}`}
-                                  >{`${termName}`}</Link>
+                                    className="button is-text"
+                                  >
+                                    {`${termName}`
+                                      .split("/")
+                                      .map(s => t(s))
+                                      .join("/")}
+                                  </Link>
                                 </li>
                               )
                             })}
@@ -148,14 +202,14 @@ function Layout({
       <footer className="footer">
         <div className="content has-text-centered">
           <span className="gap-level">
-            Author:{" "}
+            {t("Author")}:{" "}
             <Link to={`//${data.site.siteMetadata.siteUrl}`}>
               {data.site.siteMetadata.author}
             </Link>
           </span>
 
           <span className="gap-level">
-            The website content is licensed{" "}
+            {t("Welcome to {{title}}")} {t("The website content is licensed")}{" "}
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
               CC BY NC SA 4.0
             </a>

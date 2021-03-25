@@ -1,8 +1,10 @@
 import React from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
+import { Trans, useTranslation, Link } from "gatsby-plugin-react-i18next"
 import * as R from "ramda"
 
 function ArticleList({ articles }) {
+  const { t } = useTranslation()
   return (
     <div>
       {articles.map(({ node }, index) => {
@@ -11,9 +13,19 @@ function ArticleList({ articles }) {
             <div className="level is-mobile">
               <div className="level-left">
                 <div className="level-item">
-                  <Link to={"/" + node.frontmatter.slug} className="title">
-                    {node.frontmatter.title ||
-                      node.frontmatter.slug.replace("-", " ")}
+                  <Link to={"/" + node.frontmatter.slug}>
+                    <span className="icon-text">
+                      <span className="icon">
+                        {/* <i className="fas fa-rocket"></i> */}
+                        <i className="fas fa-link"></i>
+                      </span>
+                      <span className="title">
+                        {t(
+                          node.frontmatter.title ||
+                            node.frontmatter.slug.replace("-", " ")
+                        )}
+                      </span>
+                    </span>
                   </Link>
                 </div>
               </div>

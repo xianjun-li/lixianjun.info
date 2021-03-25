@@ -12,6 +12,7 @@ require('ts-node').register({
 })
 
 const appConfig = require("./app-config")
+const { languages, defaultLanguage } = require('./languages')
 
 module.exports = {
   /* Your site config here */
@@ -31,23 +32,23 @@ module.exports = {
       },
     },
 
-    // gatsby-source-filesystem
+    `gatsby-plugin-sass`,
+
+
+    // content start {
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: "contents",
         path: `${__dirname}/contents`,
       },
     },
-
-    // helmet
-    `gatsby-plugin-react-helmet`,
 
     //image
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
 
-    // markdown ---------
-    // markdown content
     {
       resolve: `gatsby-transformer-remark`,
       options: {
@@ -87,7 +88,11 @@ module.exports = {
         ],
       },
     },
-    // end.
+    // } content end.
+
+    // optimize start {
+    // helmet
+    `gatsby-plugin-react-helmet`,
 
     {
       resolve: `gatsby-plugin-manifest`,
@@ -104,6 +109,42 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
+    // } optimize end.
+
+    // i18n start {
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/locales`,
+        name: `locale`
+      }
+    },
+    {
+      resolve: `gatsby-plugin-react-i18next`,
+      options: {
+        languages,
+        defaultLanguage,
+        siteUrl: 'http://localhost:9000',
+        i18nextOptions: {
+          defaultNS: 'common',
+          //debug: true,
+          lowerCaseLng: true,
+          saveMissing: false,
+          interpolation: {
+            escapeValue: false // not needed for react as it escapes by default
+          },
+          keySeparator: false,
+          nsSeparator: false
+        },
+        pages: [
+          {
+            matchPath: '/ignored-page',
+            languages: ['en']
+          }
+        ]
+      }
+    },
+    // { i18n end.
 
   ],
 }

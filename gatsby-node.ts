@@ -8,7 +8,7 @@ interface QueryResult {
     allMarkdownRemark: {
       edges: Array<{
         node: {
-          frontmatter: unknown
+          frontmatter: Object
           excerpt: string
         }
       }>
