@@ -1,11 +1,12 @@
 {
   "Author": "作者",
+  "Li Xianjun's Blog": "李贤军的小站",
   "The website content is licensed": "网站内容采用许可协议",
-  "Welcome to {{title}}": "欢迎光临{{title}}",
+  "Welcome to": "欢迎光临",
   "Date": "日期",
   "Language": "语言",
   "index": "索引",
-  "home": "首页",
+  "Home": "首页",
   "listing": "清单",
   "This website is made possible by the Gatsby open source project and other open source project or resource": "本网站是由Gatsby开源项目和其他开源项目或资源提供的"
 }

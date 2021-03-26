@@ -24,6 +24,12 @@
   border-right-color: #ccc;
 }
 
+.site-logo {
+  background-image: url(favicon.svg);
+  background-repeat: no-repeat;
+  padding-left: 48px;
+}
+
 /* responsive nav */
 @media screen and (max-width: 1023px) {
   /* show mavbar-menu on screen less than 1024px */

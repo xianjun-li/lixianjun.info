@@ -60,6 +60,8 @@ function Layout({
     `
   )
 
+  const siteTitle = data.site.siteMetadata.title
+
   return (
     <div className="app">
       <Helmet>
@@ -74,7 +76,7 @@ function Layout({
             <div className="container">
               <input type="checkbox" id="menu-toggle" className="is-hidden" />
               <div className="navbar-brand">
-                <span className="navbar-item">
+                <span className="navbar-item site-logo">
                   {t(data.site.siteMetadata.title)}
                 </span>
                 {/* jsx for属性需要改为htmlFor */}
@@ -209,7 +211,8 @@ function Layout({
           </span>
 
           <span className="level-item gap-level">
-            {t("Welcome to {{title}}")} {t("The website content is licensed")}{" "}
+            {t(`Welcome to`)}[{`${siteTitle}`}]{" "}
+            {t("The website content is licensed")}{" "}
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
               CC BY NC SA 4.0
             </a>

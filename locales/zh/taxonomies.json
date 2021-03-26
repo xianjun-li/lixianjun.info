@@ -3,6 +3,10 @@
   "series": "系列",
   "tags": "标签",
   "technology": "科技",
-  "programming-language": "编程语言",
-  "golang": "Go语言"
+  "computer": "计算机",
+  "programming": "编程",
+  "language": "语言",
+  "lib": "库",
+  "golang": "Go语言",
+  "learn": "学习"
 }
