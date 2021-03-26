@@ -21,8 +21,8 @@ module.exports = {
 
   plugins: [
 
-    // base plugins -----------
-
+    // language start {
+    `gatsby-plugin-sass`,
     {
       resolve: `gatsby-plugin-typescript`,
       options: {
@@ -31,12 +31,44 @@ module.exports = {
         allExtensions: true, // defaults to false
       },
     },
+    // } language end.
 
-    `gatsby-plugin-sass`,
-
+    // i18n start {
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/locales`,
+        name: `locale`
+      }
+    },
+    {
+      resolve: `gatsby-plugin-react-i18next`,
+      options: {
+        languages,
+        defaultLanguage,
+        siteUrl: 'http://localhost:9000',
+        i18nextOptions: {
+          defaultNS: 'common',
+          //debug: true,
+          lowerCaseLng: true,
+          saveMissing: false,
+          interpolation: {
+            escapeValue: false // not needed for react as it escapes by default
+          },
+          keySeparator: false,
+          nsSeparator: false
+        },
+        pages: [
+          {
+            matchPath: '/ignored-page',
+            languages: ['en']
+          }
+        ]
+      }
+    },
+    // } i18n end.
 
     // content start {
-
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -45,10 +77,11 @@ module.exports = {
       },
     },
 
-    //image
+    // image
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
 
+    // markdown
     {
       resolve: `gatsby-transformer-remark`,
       options: {
@@ -93,7 +126,7 @@ module.exports = {
     // optimize start {
     // helmet
     `gatsby-plugin-react-helmet`,
-
+    `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -108,43 +141,13 @@ module.exports = {
         icon: `static/icon.png`, // This path is relative to the root of the site.
       },
     },
-    `gatsby-plugin-offline`,
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        exclude: ['/**/404', '/**/404.html'],
+
+      }
+    },
     // } optimize end.
-
-    // i18n start {
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/locales`,
-        name: `locale`
-      }
-    },
-    {
-      resolve: `gatsby-plugin-react-i18next`,
-      options: {
-        languages,
-        defaultLanguage,
-        siteUrl: 'http://localhost:9000',
-        i18nextOptions: {
-          defaultNS: 'common',
-          //debug: true,
-          lowerCaseLng: true,
-          saveMissing: false,
-          interpolation: {
-            escapeValue: false // not needed for react as it escapes by default
-          },
-          keySeparator: false,
-          nsSeparator: false
-        },
-        pages: [
-          {
-            matchPath: '/ignored-page',
-            languages: ['en']
-          }
-        ]
-      }
-    },
-    // { i18n end.
-
   ],
 }
