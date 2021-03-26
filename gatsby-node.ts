@@ -1,6 +1,6 @@
 import * as R from "ramda"
 import { taxonomies, paging } from "./app-config"
-import {getTaxonomiesName, getAllTerms } from "./taxonomy"
+import { getTaxonomiesName, getAllTerms } from "./taxonomy"
 
 interface QueryResult {
   errors: string
@@ -28,7 +28,9 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
         fromNow: Boolean
         locale: String
       ): Date
-      ${getTaxonomiesName(taxonomies).map(item => `${item}: [String!]`).join("\n")}
+      ${getTaxonomiesName(taxonomies)
+        .map(item => `${item}: [String!]`)
+        .join("\n")}
     }
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
@@ -64,7 +66,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }
     `
 
-  const result : QueryResult = await graphql(markdownQuery)
+  const result: QueryResult = await graphql(markdownQuery)
 
   // Handle errors
   if (result.errors) {
@@ -87,17 +89,17 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     })
   })
 
-  const frontmatters = R.map(content => R.path(["node","frontmatter"], content) , contents)
-
-  const terms = getAllTerms(
-    frontmatters, 
-    getTaxonomiesName(taxonomies)
+  const frontmatters = R.map(
+    content => R.path(["node", "frontmatter"], content),
+    contents
   )
+
+  const terms = getAllTerms(frontmatters, getTaxonomiesName(taxonomies))
 
   // index
   const indexTemplate = require.resolve(`./src/templates/index.tsx`)
   createPage({
-    path: '/',
+    path: "/",
     component: indexTemplate,
     context: {
       terms,
@@ -108,22 +110,21 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   console.log(`terms: ${terms}`)
 
   R.forEachObjIndexed((terms, tax) => {
-    R.forEachObjIndexed((articles:Object, term) => {
+    R.forEachObjIndexed((articles: Object, term) => {
       console.log(`term: ${term}`)
       const totalPages = Object.keys(articles).length
       const prePage = paging.offset
       const numPages = Math.ceil(totalPages / prePage)
 
       Array.from({ length: numPages }).forEach((_, i) => {
-
-        const frontmatterFilterOptions : any = {}
-        frontmatterFilterOptions.draft = {ne: true}
+        const frontmatterFilterOptions: any = {}
+        frontmatterFilterOptions.draft = { ne: true }
         frontmatterFilterOptions[tax] = { eq: `${term}` }
 
-        const filter = { frontmatter: frontmatterFilterOptions }        
+        const filter = { frontmatter: frontmatterFilterOptions }
 
         createPage({
-          path: (i === 0 ? `/${term}` : `/${term}/${i + 1}`),
+          path: i === 0 ? `/${term}` : `/${term}/${i + 1}`,
           component: require.resolve(`./src/templates/list.tsx`),
           context: {
             limit: totalPages,
