@@ -64,7 +64,7 @@ function Layout({
     <div className="app">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{title}</title>
+        <title>{t(title)}</title>
         <meta name="description" content={description} />
       </Helmet>
 
@@ -75,7 +75,7 @@ function Layout({
               <input type="checkbox" id="menu-toggle" className="is-hidden" />
               <div className="navbar-brand">
                 <span className="navbar-item">
-                  {data.site.siteMetadata.title}
+                  {t(data.site.siteMetadata.title)}
                 </span>
                 {/* jsx for属性需要改为htmlFor */}
                 <label htmlFor="menu-toggle" className="navbar-burger burger">
@@ -90,7 +90,7 @@ function Layout({
                     ({ title, url, iconStyle }) => {
                       return (
                         <Link to={url} className="navbar-item">
-                          {title}
+                          {t(title)}
                         </Link>
                       )
                     }
@@ -200,19 +200,25 @@ function Layout({
       </section>
 
       <footer className="footer">
-        <div className="content has-text-centered">
-          <span className="gap-level">
+        <div className="level has-text-centered">
+          <span className="level-item gap-level">
             {t("Author")}:{" "}
             <Link to={`//${data.site.siteMetadata.siteUrl}`}>
               {data.site.siteMetadata.author}
             </Link>
           </span>
 
-          <span className="gap-level">
+          <span className="level-item gap-level">
             {t("Welcome to {{title}}")} {t("The website content is licensed")}{" "}
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
               CC BY NC SA 4.0
             </a>
+          </span>
+          <span className="level-item gap-level">
+            {t(
+              "This website is made possible by the Gatsby open source project and other open source project or resource"
+            )}
+            : <Link to={"/about/credits"}>{t("listing")}</Link>
           </span>
         </div>
       </footer>

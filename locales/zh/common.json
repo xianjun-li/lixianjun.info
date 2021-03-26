@@ -4,5 +4,8 @@
   "Welcome to {{title}}": "欢迎光临{{title}}",
   "Date": "日期",
   "Language": "语言",
-  "index": "索引"
+  "index": "索引",
+  "home": "首页",
+  "listing": "清单",
+  "This website is made possible by the Gatsby open source project and other open source project or resource": "本网站是由Gatsby开源项目和其他开源项目或资源提供的"
 }
