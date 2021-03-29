@@ -88,7 +88,7 @@ module.exports = {
         plugins: [
           // gatsby-remark-videos 要在 gatsby-remark-copy-linked-files,gatsby-remark-images前
           {
-            resolve: `gatsby-remark-videos-new`,
+            resolve: `gatsby-remark-videos`,
             options: {
               pipelins: [],
             }
