@@ -17,8 +17,8 @@ log4js.configure({
     webhook: {
       //以文件格式存储
       type: "dateFile",
-      filename: "webhook",
-      pattern: "-yyyy-MM-dd.log",
+      filename: "log/webhook",
+      pattern: "yyyy-MM-dd.log",
       alwaysIncludePattern: true,
     },
   },
