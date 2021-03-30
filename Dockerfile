@@ -22,8 +22,7 @@ COPY package*.json yarn.lock patches .
 # set yarn registry
 RUN yarn config set registry https://registry.npm.taobao.org
 
-RUN yarn install --production
-RUN yarn postinstall
+RUN yarn install --production && yarn postinstall && yarn autoclean
 
 # VOLUME ["www/contents"]
 
