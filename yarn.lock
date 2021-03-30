@@ -1642,6 +1642,42 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@octokit/openapi-types@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-6.0.0.tgz#7da8d7d5a72d3282c1a3ff9f951c8133a707480d"
+  integrity sha512-CnDdK7ivHkBtJYzWzZm7gEkanA7gKH6a09Eguz7flHw//GacPJLmkHA3f3N++MJmlxD1Fl+mB7B32EEpSCwztQ==
+
+"@octokit/request-error@^2.0.2":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@octokit/request-error/-/request-error-2.0.5.tgz#72cc91edc870281ad583a42619256b380c600143"
+  integrity sha512-T/2wcCFyM7SkXzNoyVNWjyVlUwBvW3igM3Btr/eKYiPmucXTtkxt2RBsf6gn3LTzaLSLTQtNmvg+dGsOxQrjZg==
+  dependencies:
+    "@octokit/types" "^6.0.3"
+    deprecation "^2.0.0"
+    once "^1.4.0"
+
+"@octokit/types@^6.0.3":
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.13.0.tgz#779e5b7566c8dde68f2f6273861dd2f0409480d0"
+  integrity sha512-W2J9qlVIU11jMwKHUp5/rbVUeErqelCsO5vW5PKNb7wAXQVUz87Rc+imjlEvpvbH8yUb+KHmv8NEjVZdsdpyxA==
+  dependencies:
+    "@octokit/openapi-types" "^6.0.0"
+
+"@octokit/webhooks-definitions@3.65.2":
+  version "3.65.2"
+  resolved "https://registry.yarnpkg.com/@octokit/webhooks-definitions/-/webhooks-definitions-3.65.2.tgz#ca644b8d0439870b6221b46b47e412005f50c1a1"
+  integrity sha512-xOPH/kGbnsHQrPLRTk75F3lkxkpY+1vPWqq74mBCUwfjYVnVv3q9l7yi+ZvyUrZ2O/kqjhuJWbG923G/icd0ag==
+
+"@octokit/webhooks@^8.8.0":
+  version "8.8.0"
+  resolved "https://registry.yarnpkg.com/@octokit/webhooks/-/webhooks-8.8.0.tgz#bd4560217cfdd9c528739a374d2bea3a7a1e3c91"
+  integrity sha512-IuZNROGyMLegD/67+1YVv6kNIoxCQKhLLGvmNuitmk6okeMvqCuQGXNM6eyBF9LQ5uxQyr+2vVPaXvQU/p7QQQ==
+  dependencies:
+    "@octokit/request-error" "^2.0.2"
+    "@octokit/webhooks-definitions" "3.65.2"
+    aggregate-error "^3.1.0"
+    debug "^4.0.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.3.tgz#1eec460596d200c0236bf195b078a5d1df89b766"
@@ -2282,7 +2318,7 @@ adjust-sourcemap-loader@3.0.0:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
 
-aggregate-error@^3.0.0:
+aggregate-error@^3.0.0, aggregate-error@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
   integrity sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
@@ -4477,6 +4513,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+deprecation@^2.0.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/deprecation/-/deprecation-2.3.1.tgz#6368cbdb40abf3373b525ac87e4a260c3a700919"
+  integrity sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==
 
 destroy@~1.0.4:
   version "1.0.4"
