@@ -1,31 +1,50 @@
-FROM node:lts-alpine
+FROM node:14.16.0-alpine3.11 as base
 
 MAINTAINER lixianjun
 
+RUN set -eux && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+FROM base as builder
+
 EXPOSE 3000
+EXPOSE 9000
+
 WORKDIR www
-
-# RUN set -eux && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories 
-# RUN apk add git openssh
-# RUN apk add ffmpeg
-# # mozjpeg: see https://github.com/imagemin/mozjpeg-bin/issues/47#issuecomment-699629892
-# RUN apk add autoconf automake libtool make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev
-
-## merge apk add package
-RUN set -eux && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
-&& apk add git openssh \
-ffmpeg \
-autoconf automake libtool make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev
-
-COPY package*.json yarn.lock patches .
 
 # set yarn registry
 RUN yarn config set registry https://registry.npm.taobao.org
+## set sharp chiness mirror
+## see https://sharp.pixelplumbing.com/install#chinese-mirror
+RUN yarn config set sharp_libvips_binary_host "https://npm.taobao.org/mirrors/sharp-libvips"
 
-RUN yarn install --production && yarn postinstall && yarn autoclean
+COPY ["package.json", "yarn.lock",".yarnclean", "./patches", "./"]
 
-# VOLUME ["www/contents"]
+# dependancies of node-gyp: python build-base
+# see https://github.com/nodejs/node-gyp
+# dependancies of mozjpeg: autoconf automake libtool make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev
+# see https://github.com/imagemin/mozjpeg-bin/issues/47#issuecomment-699629892
 
-COPY webhook.js .
+RUN apk add --no-cache --virtual .build-deps build-base autoconf automake libtool pkgconf nasm \
+&& apk add --no-cache ffmpeg \
+python3 \
+tiff jpeg zlib zlib-dev \
+&& yarn global add node-gyp --production \
+&& yarn install --production \
+&& yarn postinstall \
+&& yarn autoclean --force \
+&& yarn cache clean \
+&& apk del .build-deps
+
+## production ##
+
+FROM base as production
+
+RUN apk add --no-cache ffmpeg git openssh
+# COPY --from=builder package.json yarn.lock patches node_modules .
+COPY --from=builder /www .
+
 COPY . .
-CMD ["node", "webhook.js"]
+
+## EXEC TYPE
+ENTRYPOINT ["node", "./webhook.js"]
+# CMD ["/bin/sh"]
