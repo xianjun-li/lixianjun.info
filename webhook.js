@@ -41,42 +41,47 @@ const exec_cmd = async () => {
   return 0
 }
 
-function validateJsonWebhook(request) {
+function validateJsonWebhook(chunk, sig) {
   // calculate the signature
   const expectedSignature =
     "sha1=" +
     crypto
       .createHmac("sha1", WEBHOOK_SECRET)
-      .update(JSON.stringify(request.body))
+      .update(JSON.stringify(chunk))
       .digest("hex")
 
-  // compare the signature against the one in the request
-  const signature = request.headers["x-hub-signature"]
-  if (signature !== expectedSignature) {
+  if (sig !== expectedSignature) {
     throw new Error("Invalid signature.")
   }
 }
 
 // // test
-const handler = async (res, req) => {
+const handler = async (req, res) => {
   logger.info("start")
-  try {
-    validateJsonWebhook(res)
-  } catch (error) {
-    console.error(`validate error: ${error}`)
-    logger.error(`validate error: ${error}`)
+  let body = ""
+  req.on("data", chunk => {
+    body += chunk
+  })
+
+  req.on("end", async () => {
+    try {
+      validateJsonWebhook(body, req.headers["x-hub-signature"])
+    } catch (error) {
+      console.error(`validate error: ${error}`)
+      logger.error(`validate error: ${error}`)
+      res.writeHead(500, { "Content-Type": "text/plain" })
+      res.write("error")
+      res.end()
+      return
+    }
+
+    const result = await exec_cmd()
+    logger.info("end")
+
     req.writeHead(200, { "Content-Type": "text/plain" })
-    req.write("error")
+    req.write("success")
     req.end()
-    return
-  }
-
-  const result = await exec_cmd()
-  logger.info("end")
-
-  req.writeHead(200, { "Content-Type": "text/plain" })
-  req.write("success")
-  req.end()
+  })
 }
 
 const port = 3000
