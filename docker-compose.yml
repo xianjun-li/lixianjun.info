@@ -5,9 +5,10 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    restart: always
+    # restart: always
     ports:
       - 3000:3000
     volumes:
-      - ./:/www
+      - ./contents:/www/contents
+      - ./public:/www/public
       - ./log:/www/log

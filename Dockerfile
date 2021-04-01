@@ -39,6 +39,8 @@ tiff jpeg zlib zlib-dev \
 
 FROM base as production
 
+WORKDIR www
+
 RUN apk add --no-cache ffmpeg git openssh
 # COPY --from=builder package.json yarn.lock patches node_modules .
 COPY --from=builder /www .
@@ -46,5 +48,5 @@ COPY --from=builder /www .
 COPY . .
 
 ## EXEC TYPE
-ENTRYPOINT ["node", "./webhook.js"]
+CMD ["node", "./webhook.js"]
 # CMD ["/bin/sh"]
