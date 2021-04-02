@@ -28,7 +28,8 @@ COPY ["package.json", "yarn.lock",".yarnclean", "./patches", "./"]
 # see https://github.com/imagemin/mozjpeg-bin/issues/47#issuecomment-699629892
 
 RUN apk add --no-cache --virtual .build-deps build-base autoconf automake libtool pkgconf nasm \
-&& apk add --no-cache ffmpeg \
+&& apk add --no-cache at \
+ffmpeg \
 python3 \
 tiff jpeg zlib zlib-dev \
 && yarn global add node-gyp --production \
