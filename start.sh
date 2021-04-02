@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "start" >> /www/log/start.log && atp && node ./webhook.js
+echo "start" >> /www/log/start.log && atd && node ./webhook.js
