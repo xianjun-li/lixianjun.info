@@ -1,6 +1,6 @@
 const promisify = require("util").promisify
-// const exec = require('child_process').exec
-const exec = promisify(require("child_process").exec)
+const exec = require("child_process").exec
+// const exec = promisify(require("child_process").exec)
 const log4js = require("log4js")
 const crypto = require("crypto")
 
@@ -34,10 +34,12 @@ if (WEBHOOK_SECRET === "") {
   throw new Error("secret is empty")
 }
 
-const cmd = `cd ./contents && git checkout . && git pull --ff-only origin master && yarn build && exit 0`
+const cmd = `at -f ${__dirname}/update_contents.sh now`
 
-const exec_cmd = async () => {
-  const { err, stdout, stderr } = await exec(cmd)
+const exec_cmd = () => {
+  logger.info(`run cmd start:${cmd}`)
+  exec(cmd)
+  logger.info("cmd end")
   return 0
 }
 
@@ -56,7 +58,7 @@ function validateJsonWebhook(algorithm, chunk, sig, secret) {
 }
 
 const handler = async (req, res) => {
-  logger.info("start")
+  logger.info("request handle start")
   let body = ""
   const sig = req.headers["x-hub-signature-256"] || "" //防止不存在而报错
   req.on("data", chunk => {
@@ -78,12 +80,12 @@ const handler = async (req, res) => {
       res.write("error")
       res.end()
     } else {
-      const result = await exec_cmd()
-      logger.info("end")
+      exec_cmd()
+      logger.info("request handle end")
 
-      req.writeHead(200, { "Content-Type": "text/plain" })
-      req.write("success")
-      req.end()
+      res.writeHead(200, { "Content-Type": "text/plain" })
+      res.write("success")
+      res.end()
     }
   })
 }
