@@ -51,5 +51,6 @@ COPY --from=builder /www .
 COPY . .
 
 ## EXEC TYPE
-CMD ["node", "./webhook.js"]
+CMD ["./start.sh"]
+# CMD ["node", "./webhook.js]
 # CMD ["/bin/sh"]
