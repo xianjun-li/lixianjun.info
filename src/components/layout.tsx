@@ -221,7 +221,7 @@ function Layout({
             {t(
               "This website is made possible by the Gatsby open source project and other open source project or resource"
             )}
-            : <Link to={"/about/credits"}>{t("listing")}</Link>
+            : <Link to={"/about-credits"}>{t("listing")}</Link>
           </span>
         </div>
       </footer>
