@@ -6,9 +6,16 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     # restart: always
+    networks:
+      - web_default
     ports:
       - 3000:3000
+    env_file: .env
     volumes:
       - ./contents:/www/contents
       - ./public:/www/public
       - ./log:/www/log
+
+networks:
+  web_default:
+    external: true

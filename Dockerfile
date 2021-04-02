@@ -45,8 +45,7 @@ FROM base as production
 
 WORKDIR www
 
-RUN apk add --no-cache ffmpeg git openssh
-# COPY --from=builder package.json yarn.lock patches node_modules .
+RUN apk add --no-cache ffmpeg git openssh at
 COPY --from=builder /www .
 
 COPY . .
